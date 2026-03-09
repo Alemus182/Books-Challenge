@@ -1,0 +1,37 @@
+<nav class="navbar-default pace-done navbar-static-side" role="navigation">
+  <div class="sidebar-collapse">
+    <ul class="nav metismenu" id="side-menu">
+      <li class="nav-header">
+        <div class="profile-element" dropdown>
+        </div>
+        <div class="logo-element">
+            Stories App
+        </div>
+      </li>
+      <li [ngClass]="{active: activeRoute('stories')}">
+        <a [routerLink]="['/stories/new-stories']">
+          <i class="fa fa-address-book"></i>
+          <span class="nav-label">New Stories</span>
+        </a>
+      </li>
+      <li [ngClass]="{active: activeRoute('stories')}">
+        <a [routerLink]="['/stories/find-stories']">
+          <i class="fa fa-address-book"></i>
+          <span class="nav-label">Find Stories</span>
+        </a>
+      </li>
+      <li [ngClass]="{active: activeRoute('books')}">
+        <a [routerLink]="['/books/search']">
+          <i class="fa fa-search"></i>
+          <span class="nav-label">Search Books</span>
+        </a>
+      </li>
+      <li>
+        <a [routerLink]="['/login']" (click)="logout()">
+          <i class="fa fa-sign-out"></i>
+          <span class="nav-label">Exit</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+</nav>

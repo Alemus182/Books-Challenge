@@ -1,0 +1,235 @@
+@import '../../../assets/styles/imports/variables';
+
+.navbar-default {
+  background-color: transparent;
+  border-color: $nav-bg;
+  height: 100%;
+
+  .sidebar-collapse {
+    height: 100%;
+    position: relative;
+
+    #side-menu2 {
+      position: absolute;
+      bottom: 0;
+      top: auto;
+      width: 100%;
+    }
+  }
+
+  .nav {
+    .nav-header {
+      padding: 30px 25px 10px;
+      background-color: $nav-bg;
+      background-image: url('../../../assets/styles/patterns/header-profile-skin-1.png');
+      background-size: cover;
+
+      a {
+        color: #DFE4ED;
+      }
+
+      .text-muted {
+        color: #8095a8;
+      }
+
+      .expandible[aria-expanded="false"] {
+        i {
+          transform: rotate(0deg);
+        }
+      }
+
+      .expandible[aria-expanded="true"] {
+        i {
+          transform: rotate(-90deg);
+        }
+      }
+
+      .text-xs {
+        font-size: 10px;
+        position: relative;
+        color: $nav-text-color;
+
+        i {
+          position: absolute;
+          right: 35px;
+          left: auto;
+          top: auto;
+          bottom: -3px;
+          margin: auto;
+          color: $nav-text-color;
+
+          border-radius: 50%;
+          width: 18px;
+          height: 18px;
+          font-size: 12px;
+
+          &:hover {
+            color: #fff;
+          }
+        }
+      }
+
+      .dropdown-menu {
+        border: medium none;
+        border-radius: 3px;
+        box-shadow: 0 0 3px rgba(86, 96, 117, 0.7);
+        display: none;
+        float: left;
+        font-size: 12px;
+        left: 0;
+        list-style: none outside none;
+        padding: 0;
+        position: absolute;
+        text-shadow: none;
+        top: 100%;
+        z-index: 1000;
+        width: 100%;
+
+        li {
+          padding: 5px 10px;
+          display: block;
+          color: $text-color;
+          cursor: pointer;
+          border-radius: 3px;
+
+          &:hover {
+            background: $gray;
+          }
+
+          &.name {
+            cursor: default;
+            background: #fff !important;
+          }
+
+          label {
+            text-transform: uppercase;
+            margin: 0;
+          }
+        }
+
+        &.show {
+          display: block;
+        }
+      }
+
+      .dropdown-menu > li > a {
+        border-radius: 3px;
+        color: inherit;
+        line-height: 25px;
+        margin: 4px;
+        text-align: left;
+        font-weight: normal;
+      }
+
+      .dropdown-menu > .active > a,
+      .dropdown-menu > .active > a:focus,
+      .dropdown-menu > .active > a:hover {
+        color: #fff;
+        text-decoration: none;
+        background-color: $navy;
+        outline: 0;
+      }
+
+      .dropdown-menu > li > a.font-bold {
+        font-weight: 600;
+      }
+
+      .profile-element {
+        width: 100%;
+        text-align: center;
+
+        .img-logo {
+          width: 100px;
+          margin: 10px 0;
+          cursor: pointer;
+        }
+      }
+    }
+
+    & > li > a {
+      color: #fff;
+      padding: 14px 20px 14px 25px;
+      width: 100%;
+      font-size: 12px;
+      transition:  .3s;
+    }
+
+    & > li.active {
+      border-left: 4px solid #1ABB9C;
+      background: darken($nav-bg, 3%);
+    }
+
+    & > li.active > a {
+      color: #ffffff;
+    }
+
+    & > li > a:hover, .navbar-default .nav > li > a:focus {
+      background-color: darken($nav-bg, 3%);
+      color: white;
+      width: 100%;
+
+      background-image:linear-gradient(to right, $navy 49.5%, darken($nav-bg, 3%) 50%);
+      background-size: 200% 200%;
+      background-position: right;
+    }
+
+    .open > a, .nav .open > a:hover, .nav .open > a:focus {
+      background: #fff;
+    }
+
+    & > li > a i {
+      margin-right: 6px;
+    }
+
+    ul.nav-second-level {
+      background: darken($nav-bg, 3%);
+    }
+
+    .nav.nav-second-level > li.active {
+      border: none;
+    }
+
+    .nav.nav-second-level.collapse[style] {
+      height: auto !important;
+    }
+
+    .nav-second-level li,
+    .nav-third-level li {
+      border-bottom: none !important;
+    }
+
+    .nav-second-level li a {
+      padding: 7px 10px 7px 10px;
+      padding-left: 52px;
+    }
+
+    .nav-second-level li:last-child {
+      margin-bottom: 10px;
+    }
+
+    .nav-third-level li a {
+      padding-left: 62px;
+    }
+
+    li {
+      width: 100%;
+      display: flex;
+    }
+  }
+}
+
+@media (min-width: 768px) {
+  .navbar-default {
+    .nav {
+      .nav-header {
+        .dropdown-menu {
+          .name.mobile {
+            display: none;
+          }
+        }
+      }
+    }
+  }
+}
+
+

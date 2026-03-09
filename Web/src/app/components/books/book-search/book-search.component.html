@@ -1,0 +1,64 @@
+<div class="book-search-wrapper">
+  <h2 class="page-title">Book Search</h2>
+
+  <form novalidate [formGroup]="searchForm" (ngSubmit)="search()">
+    <div class="input-group search-bar">
+      <mat-form-field appearance="outline" class="search-field">
+        <mat-label>Search by title, author, or keywords</mat-label>
+        <input matInput formControlName="query" placeholder="e.g. tolkien hobbit 1937" />
+        <mat-error *ngIf="query.invalid && query.dirty">Please enter at least 2 characters.</mat-error>
+      </mat-form-field>
+      <button
+        type="submit"
+        class="btn btn-primary search-btn"
+        [disabled]="isLoadingResults">
+        <span *ngIf="!isLoadingResults">Search</span>
+        <span *ngIf="isLoadingResults">Searching...</span>
+      </button>
+    </div>
+  </form>
+
+  <mat-progress-bar mode="indeterminate" *ngIf="isLoadingResults" class="loader"></mat-progress-bar>
+
+  <div class="results-grid" *ngIf="hasSearched && !isLoadingResults">
+    <p class="no-results" *ngIf="candidates.length === 0">No results found.</p>
+
+    <mat-card class="book-card" *ngFor="let book of candidates">
+      <div class="book-card-inner">
+        <div class="cover-container">
+          <img
+            *ngIf="book.coverImageUrl"
+            [src]="book.coverImageUrl"
+            [alt]="book.title"
+            class="book-cover"
+          />
+          <div class="no-cover" *ngIf="!book.coverImageUrl">
+            <i class="fa fa-book fa-3x"></i>
+          </div>
+        </div>
+
+        <div class="book-info">
+          <mat-card-title class="book-title">{{ book.title }}</mat-card-title>
+          <mat-card-subtitle class="book-author">{{ book.author }}</mat-card-subtitle>
+
+          <div class="book-meta">
+            <span *ngIf="book.firstPublishYear" class="meta-chip">
+              <i class="fa fa-calendar"></i> {{ book.firstPublishYear }}
+            </span>
+            <a
+              *ngIf="book.openLibraryId"
+              href="https://openlibrary.org{{ book.openLibraryId }}"
+              target="_blank"
+              class="meta-chip link-chip">
+              <i class="fa fa-external-link"></i> Open Library
+            </a>
+          </div>
+
+          <mat-card-content>
+            <p class="explanation">{{ book.explanation }}</p>
+          </mat-card-content>
+        </div>
+      </div>
+    </mat-card>
+  </div>
+</div>

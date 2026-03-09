@@ -1,0 +1,14 @@
+<div *ngIf="displayError" >
+    <span class="glyphicon glyphicon-remove form-control-feedback fix-error-icon"></span>
+    <span class="sr-only">(error)</span>
+    <div *ngIf="errors?.length != 0" class="error-msg float-left">
+      {{errorMsg}} 
+    </div>
+     <div *ngIf="errors?.length != 0">
+      <tr *ngFor="let msg of errors">
+        <div class="error-msg float-left">
+          {{msg}} 
+        </div>
+      </tr>      
+     </div>
+  </div>

@@ -1,0 +1,52 @@
+
+<div  class="row" style=" height:90%;">
+  <div class="col-lg-7 col-sm-3 btn-primary" >
+  </div>
+  <div class="col-lg-5 col-sm-7">
+    <div class="middle-box text-center animated fadeInDown">
+      <div>
+        <h3>Welcome</h3>
+      </div>
+      
+      <form [formGroup]="loginForm" class="m-t" role="form" (ngSubmit)="onSubmit(loginForm)">
+        <div class="form-group" [ngClass]="displayFieldCss('username')">
+          <label class="float-left control-label required" for="username"> <strong>User </strong> </label>         
+          <input type="email" class="form-control" placeholder="Usuario" id="username" name="username"
+            formControlName="username" required="true">
+            <app-field-error-display
+            [displayError]="isFieldValid('username')" 
+            errorMsg="enter a valid user">
+            </app-field-error-display> 
+        </div>
+<br>
+        <div class="form-group" [ngClass]="displayFieldCss('pswd')">
+          <label class="float-left control-label required" for="pswd"> <strong>Password </strong></label>  
+          <input type="password" class="form-control" placeholder="Contraseña" id="pswd" name="pswd"
+            formControlName="pswd" required="true">
+          <app-field-error-display
+          [displayError]="isFieldValid('pswd')" 
+          errorMsg="enter a valid password">
+          </app-field-error-display>
+        </div>
+        <br>
+        <button type="submit" class="btn btn-primary block full-width m-b">Login</button>
+
+        <div *ngIf="showConfirm" class="alert-info fade">
+          <a class="close">&times;</a>
+          <span [innerHTML]="msg"></span>
+       </div>
+        
+      </form>
+
+      <p class="m-t info"> 
+        <small>NextTech - ©Copyright 2023</small>
+       </p>
+    
+    </div>
+  </div>  
+</div>
+
+
+
+
+

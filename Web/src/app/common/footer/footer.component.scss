@@ -1,0 +1,32 @@
+@import '../../../assets/styles/imports/variables';
+
+.footer {
+  .pull-right {
+    font-size: 12px;
+  }
+
+  .social-media {
+    a {
+      padding: 0 10px;
+      color: $text-color;
+
+      &.facebook {
+        color: #4668B3;
+      }
+      &.youtube {
+        color: #DE5745;
+      }
+      &.twitter {
+        color: #2FBBED;
+      }
+    }
+  }
+}
+
+@media (min-width: 768px) {
+  .footer {
+    .social-media {
+      display: none;
+    }
+  }
+}

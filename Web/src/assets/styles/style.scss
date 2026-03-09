@@ -1,0 +1,87 @@
+/*
+ *
+ *   NextTech - Responsive Admin Theme
+ *   version 2.7.1
+ *
+*/
+// Google Fonts
+@import url("https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700");
+
+// Variables, Mixins
+@import "imports/variables";
+
+// Theme Elements
+@import "imports/typography";
+@import "imports/navigation";
+@import "imports/top_navigation";
+@import "imports/buttons";
+@import "imports/badges_labels";
+@import "imports/elements";
+@import "imports/base";
+@import "imports/pages";
+@import "imports/metismenu";
+@import "imports/spinners";
+
+// NextTech Skins
+@import "imports/md-skin";
+
+// Media query style
+@import "imports/media";
+
+// Clear layout on print mode
+@media print {
+  nav.navbar-static-side {
+    display: none;
+  }
+  body { overflow: visible !important; }
+
+  #page-wrapper {
+    margin: 0;
+  }
+}
+
+/* Structure */
+.stories-container {
+  position: relative;
+  min-height: 200px;
+}
+
+.stories-table-container {
+  position: relative;
+  max-height: 80%;
+  overflow: auto;
+}
+
+table {
+  width: 100%;
+}
+
+.stories-loading-shade {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 56px;
+  right: 0;
+  background: rgba(0, 0, 0, 0.15);
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.stories-rate-limit-reached {
+  color: #6d5252;
+  max-width: 80%;
+  text-align: center;
+  font-size:xx-large;
+}
+
+/* Column Widths */
+.mat-column-number,
+.mat-column-state {
+  max-width: 64px;
+}
+
+.mat-column-created {
+  max-width: 124px;
+}
