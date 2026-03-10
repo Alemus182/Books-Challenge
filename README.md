@@ -25,13 +25,16 @@ A full-stack library book discovery application. Given a free-text query (title,
 └──────────────────────────────────────────────────────┘
 ```
 
+> A second frontend built with **React 18 + Vite** is also available in `Web-React/`. Both SPAs connect to the same .NET 8 backend. See [Frontend — React (Vite)](#3-frontend--react-vite) for setup instructions.
+
 ### Key technology choices
 
 | Layer | Technology | Notes |
 |-------|-----------|-------|
-| Frontend | Angular 10 | Standalone SPA with Hash routing |
+| Frontend (Angular) | Angular 10 | Standalone SPA with Hash routing |
+| Frontend (React) | React 18 + Vite | Lighter alternative SPA, port 4200 |
 | UI components | Angular Material + Bootstrap 4 | Pre-built data-table, cards, progress bar |
-| State | NgRx | Auth slice |
+| State | NgRx / React Context | Auth slice (Angular) · AuthContext (React) |
 | Backend | .NET 8 Minimal API | Endpoint groups via `RouterBase` |
 | Mediator / CQRS | MediatR 11 | Request/handler pipeline with validation & logging behaviours |
 | Auth | JWT Bearer | Symmetric key, configurable lifetime |
@@ -48,9 +51,9 @@ A full-stack library book discovery application. Given a free-text query (title,
 | Tool | Version |
 |------|---------|
 | [.NET SDK](https://dotnet.microsoft.com/download) | 8.0 or later |
-| [Node.js](https://nodejs.org/) | 14.x – 16.x (Angular 10 compatible) |
+| [Node.js](https://nodejs.org/) | 14.x – 16.x (Angular 10) · 18.x+ (React/Vite) |
 | npm | 6.x or later (bundled with Node) |
-| Angular CLI | 10.x (`npm install -g @angular/cli@10`) |
+| Angular CLI | 10.x (`npm install -g @angular/cli@10`) — Angular only |
 
 ---
 
@@ -122,14 +125,47 @@ export const environment = {
 
 ---
 
-### 3. Running tests
+### 3. Frontend — React (Vite)
+
+```powershell
+# From the repository root
+cd Web-React
+npm install
+npm run dev
+```
+
+The app is served at **`http://localhost:4200`** (same port as the Angular app — run only one at a time).
+
+It connects to the same backend at `https://localhost:7245`. To change the API base URL, update `Web-React/src/services/` (look for the `axios` base URL configuration).
+
+#### Available routes
+
+| Path | Component | Description |
+|------|-----------|-------------|
+| `/login` | `Login` | Obtain a JWT token |
+| `/books/search` | `BookSearch` | **AI-powered book discovery** |
+| `*` | — | Redirects to `/books/search` |
+
+#### Tech stack
+
+| Package | Version | Role |
+|---------|---------|------|
+| React | 18.x | UI rendering |
+| React Router DOM | 6.x | Client-side routing |
+| Axios | 1.x | HTTP calls to the API |
+| Vite | 5.x | Dev server & bundler |
+| TypeScript | 5.x | Type safety |
+
+---
+
+### 4. Running tests
 
 ```powershell
 # Backend integration tests (from repository root)
 cd Test
 dotnet test
 
-# Frontend unit tests
+# Frontend unit tests (Angular)
 cd Web
 npm test
 ```

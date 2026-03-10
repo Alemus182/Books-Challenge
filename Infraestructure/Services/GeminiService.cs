@@ -1,9 +1,9 @@
 using Application.Dtos;
 using Application.Interfaces.Infraestructure.Services;
+using Application.Models;
 using Microsoft.Extensions.Configuration;
 using System.Text;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 
 namespace Infraestructure.Services
 {
@@ -121,50 +121,5 @@ namespace Infraestructure.Services
             var end = trimmed.LastIndexOf("```");
             return end > start ? trimmed[start..end].Trim() : trimmed;
         }
-    }
-
-    internal record GeminiFieldsResult
-    {
-        [JsonPropertyName("title")]
-        public string? Title { get; init; }
-
-        [JsonPropertyName("author")]
-        public string? Author { get; init; }
-
-        [JsonPropertyName("keywords")]
-        public IList<string>? Keywords { get; init; }
-    }
-
-    internal record GeminiRankItem
-    {
-        [JsonPropertyName("openLibraryId")]
-        public string? OpenLibraryId { get; init; }
-
-        [JsonPropertyName("explanation")]
-        public string? Explanation { get; init; }
-    }
-
-    internal record GeminiApiResponse
-    {
-        [JsonPropertyName("candidates")]
-        public IList<GeminiApiCandidate>? Candidates { get; init; }
-    }
-
-    internal record GeminiApiCandidate
-    {
-        [JsonPropertyName("content")]
-        public GeminiApiContent? Content { get; init; }
-    }
-
-    internal record GeminiApiContent
-    {
-        [JsonPropertyName("parts")]
-        public IList<GeminiApiPart>? Parts { get; init; }
-    }
-
-    internal record GeminiApiPart
-    {
-        [JsonPropertyName("text")]
-        public string? Text { get; init; }
     }
 }

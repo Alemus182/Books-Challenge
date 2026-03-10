@@ -1,7 +1,7 @@
 using Application.Dtos;
 using Application.Interfaces.Infraestructure.Services;
+using Application.Models;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 
 namespace Infraestructure.Services
@@ -129,53 +129,5 @@ namespace Infraestructure.Services
 
         private static string Normalize(string input) =>
             Regex.Replace(input.ToLowerInvariant(), @"[^\w\s]", " ").Trim();
-    }
-
-    internal record OlSearchResult
-    {
-        [JsonPropertyName("docs")]
-        public IList<OlDoc>? Docs { get; init; }
-    }
-
-    internal record OlDoc
-    {
-        [JsonPropertyName("key")]
-        public string? Key { get; init; }
-
-        [JsonPropertyName("title")]
-        public string? Title { get; init; }
-
-        [JsonPropertyName("author_name")]
-        public IList<string>? AuthorName { get; init; }
-
-        [JsonPropertyName("first_publish_year")]
-        public int? FirstPublishYear { get; init; }
-
-        [JsonPropertyName("cover_i")]
-        public int? CoverId { get; init; }
-    }
-
-    internal record OlWork
-    {
-        [JsonPropertyName("authors")]
-        public IList<OlWorkAuthor>? Authors { get; init; }
-    }
-
-    internal record OlWorkAuthor
-    {
-        [JsonPropertyName("author")]
-        public OlRef? Author { get; init; }
-    }
-
-    internal record OlRef
-    {
-        [JsonPropertyName("key")]
-        public string? Key { get; init; }
-    }
-
-    internal record OlAuthor
-    {
-        [JsonPropertyName("name")]
-        public string? Name { get; init; }
     }
 }

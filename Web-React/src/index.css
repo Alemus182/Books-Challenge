@@ -1,0 +1,179 @@
+/* =============================================
+   Global styles – mirrors the Angular app's
+   Inspinia / Bootstrap 3 aesthetic with BS5
+   ============================================= */
+
+body {
+  background-color: #f3f3f4;
+  font-family: "open sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 13px;
+  color: #676a6c;
+}
+
+/* ── Wrapper ── */
+#wrapper {
+  display: flex;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+/* ── Sidebar ── */
+.navbar-default.navbar-static-side {
+  width: 220px;
+  min-height: 100vh;
+  background: #2f4050;
+  flex-shrink: 0;
+  transition: width 0.3s;
+}
+
+#wrapper.mini-navbar .navbar-default.navbar-static-side {
+  width: 70px;
+}
+
+.navbar-default.navbar-static-side .nav-header {
+  padding: 33px 25px;
+  background: #1a2535;
+}
+
+.logo-element {
+  display: none;
+  color: #fff;
+  font-weight: 700;
+  font-size: 16px;
+  text-align: center;
+}
+
+#wrapper.mini-navbar .logo-element {
+  display: block;
+}
+
+#wrapper:not(.mini-navbar) .logo-element {
+  display: block;
+}
+
+.navbar-default.navbar-static-side ul.nav li a,
+.navbar-default.navbar-static-side ul.nav li button.nav-logout {
+  color: #a7b1c2;
+  font-size: 13px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 20px;
+  width: 100%;
+  background: none;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+
+.navbar-default.navbar-static-side ul.nav li a:hover,
+.navbar-default.navbar-static-side ul.nav li button.nav-logout:hover,
+.navbar-default.navbar-static-side ul.nav li a.active {
+  background: #293846;
+  color: #fff;
+}
+
+/* ── Page wrapper ── */
+#page-wrapper {
+  flex: 1;
+  min-height: 100vh;
+  background: #f3f3f4;
+}
+
+/* ── Top navbar ── */
+#topnavbar {
+  background: #fff;
+  border-bottom: 1px solid #e7eaec;
+  padding: 0;
+  margin: 0;
+}
+
+#topnavbar .minimalize-styl-2 {
+  color: #676a6c;
+  font-size: 18px;
+  padding: 15px 20px;
+}
+
+/* ── Alert container ── */
+.alert-container {
+  position: fixed;
+  top: 70px;
+  right: 20px;
+  z-index: 1050;
+  min-width: 300px;
+  max-width: 420px;
+}
+
+/* ── iBox panels ── */
+.ibox {
+  background: #fff;
+  border-radius: 2px;
+  margin: 20px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.ibox-title {
+  border-bottom: 1px solid #e7eaec;
+  padding: 15px 20px;
+}
+
+.ibox-title h2 {
+  font-size: 20px;
+  font-weight: 600;
+  color: #676a6c;
+  margin: 0;
+}
+
+.ibox-content {
+  padding: 20px;
+}
+
+/* ── Book cards ── */
+.book-card {
+  border: none;
+  border-radius: 6px;
+  transition: box-shadow 0.2s;
+}
+
+.book-card:hover {
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15) !important;
+}
+
+.cover-container {
+  width: 80px;
+}
+
+.book-cover {
+  width: 80px;
+  height: 110px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.no-cover {
+  width: 80px;
+  height: 110px;
+  background: #f3f3f4;
+  border-radius: 4px;
+}
+
+.explanation {
+  line-height: 1.5;
+}
+
+/* ── Login page ── */
+.middle-box {
+  max-width: 400px;
+  margin: auto;
+}
+
+/* ── Metismenu base reset ── */
+ul.metismenu,
+ul.metismenu li {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
