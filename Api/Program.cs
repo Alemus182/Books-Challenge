@@ -22,7 +22,8 @@ using System.Text;
 
         builder.Services.AddApplication();
 
-        builder.Services.AddInfrastructure(configuration);
+        var promptFilePath = Path.Combine(builder.Environment.WebRootPath ?? "wwwroot", "prompts.json");
+        builder.Services.AddInfrastructure(configuration, promptFilePath);
 
         builder.Services.AddScoped<RouterBase, AuthRouter>();
         builder.Services.AddScoped<RouterBase, BooksRouter>();

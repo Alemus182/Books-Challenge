@@ -2,6 +2,7 @@ using Application.Dtos;
 using Application.Interfaces.Infraestructure.Services;
 using Application.Models;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using System.Text;
 using System.Text.Json;
 
@@ -10,27 +11,32 @@ namespace Infraestructure.Services
     public class GeminiService : IGeminiService
     {
         private readonly IHttpClientFactory _httpClientFactory;
+        private readonly IPromptProvider _promptProvider;
+        private readonly ILogger<GeminiService> _logger;
         private readonly string _apiKey;
         private static readonly JsonSerializerOptions JsonOptions = new() { PropertyNameCaseInsensitive = true };
 
-        public GeminiService(IHttpClientFactory httpClientFactory, IConfiguration configuration)
+        public GeminiService(
+            IHttpClientFactory httpClientFactory, 
+            IConfiguration configuration, 
+            ILogger<GeminiService> logger,
+            IPromptProvider promptProvider)
         {
             _httpClientFactory = httpClientFactory;
+            _logger = logger;
+            _promptProvider = promptProvider;
             _apiKey = configuration["Gemini:ApiKey"]
                       ?? throw new InvalidOperationException("Gemini:ApiKey is not configured.");
         }
 
         public async Task<ExtractedQueryDto> ExtractFieldsAsync(string rawQuery)
         {
-            var prompt = $$"""
-                Extract structured fields from this book search query.
-                Return ONLY valid JSON with this exact shape (use null for missing fields, no markdown):
-                {"title": "...", "author": "...", "keywords": ["..."]}
+            var promptTemplate = _promptProvider.GetExtractFieldsPrompt();
+            var prompt = string.Format(promptTemplate.Template, rawQuery);
 
-                Query: {{rawQuery}}
-                """;
+            _logger.LogInformation("ExtractFields using prompt version {Version}", promptTemplate.Version);
 
-            var text = await CallGeminiAsync(prompt);
+            var text = await CallGeminiAsync(prompt, promptTemplate.Config);
             try
             {
                 var cleaned = StripMarkdown(text);
@@ -42,8 +48,9 @@ namespace Infraestructure.Services
                     Keywords = fields?.Keywords ?? new List<string>()
                 };
             }
-            catch
+            catch (Exception ex)
             {
+                _logger.LogWarning(ex, "Failed to deserialize extracted fields from Gemini response");
                 return new ExtractedQueryDto { Keywords = new List<string>() };
             }
         }
@@ -56,16 +63,12 @@ namespace Infraestructure.Services
                 candidates.Select(c => new { c.OpenLibraryId, c.Title, c.Author, c.FirstPublishYear }),
                 JsonOptions);
 
-            var prompt = $$"""
-                Rerank these book candidates best-first for the query, and write a one-sentence explanation for each.
-                Return ONLY a valid JSON array (no markdown):
-                [{"openLibraryId": "...", "explanation": "one sentence"}]
+            var promptTemplate = _promptProvider.GetRerankCandidatesPrompt();
+            var prompt = string.Format(promptTemplate.Template, rawQuery, summary);
 
-                Query: {{rawQuery}}
-                Candidates: {{summary}}
-                """;
+            _logger.LogInformation("Reranking using prompt version {Version}", promptTemplate.Version);
 
-            var text = await CallGeminiAsync(prompt);
+            var text = await CallGeminiAsync(prompt, promptTemplate.Config);
             try
             {
                 var cleaned = StripMarkdown(text);
@@ -84,24 +87,33 @@ namespace Infraestructure.Services
 
                 return result;
             }
-            catch
+            catch (Exception ex)
             {
+                _logger.LogWarning(ex, "Failed to deserialize reranked results from Gemini response");
                 return candidates;
             }
         }
 
-        private async Task<string> CallGeminiAsync(string prompt)
+        private async Task<string> CallGeminiAsync(string prompt, GenerationConfig? config = null)
         {
             var client = _httpClientFactory.CreateClient("gemini");
-            var body = new
+
+            var request = new GeminiRequest
             {
-                contents = new[]
+                Contents = new List<GeminiContent>
                 {
-                    new { parts = new[] { new { text = prompt } } }
-                }
+                    new() { Parts = new List<GeminiPart> { new() { Text = prompt } } }
+                },
+                GenerationConfig = config != null ? new GeminiGenerationConfig
+                {
+                    Temperature = config.Temperature,
+                    TopK = config.TopK,
+                    TopP = config.TopP,
+                    MaxOutputTokens = config.MaxOutputTokens
+                } : null
             };
 
-            var requestJson = JsonSerializer.Serialize(body);
+            var requestJson = JsonSerializer.Serialize(request, JsonOptions);
             var content = new StringContent(requestJson, Encoding.UTF8, "application/json");
             var response = await client.PostAsync(
                 $"v1beta/models/gemini-2.0-flash:generateContent?key={_apiKey}", content);

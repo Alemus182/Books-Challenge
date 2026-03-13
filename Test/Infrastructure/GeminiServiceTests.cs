@@ -1,6 +1,9 @@
 using Application.Dtos;
+using Application.Interfaces.Infraestructure.Services;
+using Application.Models;
 using Infraestructure.Services;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Moq;
 using Moq.Protected;
 using System.Net;
@@ -35,7 +38,23 @@ namespace Test.Infrastructure
             var configMock = new Mock<IConfiguration>();
             configMock.Setup(c => c["Gemini:ApiKey"]).Returns("test-api-key");
 
-            return new GeminiService(factoryMock.Object, configMock.Object);
+            var loggerMock = new Mock<ILogger<GeminiService>>();
+
+            var promptProviderMock = new Mock<IPromptProvider>();
+            promptProviderMock.Setup(p => p.GetExtractFieldsPrompt()).Returns(new PromptTemplate
+            {
+                Version = "1.0-test",
+                Template = "Extract fields: {0}",
+                Config = new GenerationConfig { Temperature = 0.1, TopK = 20, TopP = 0.8, MaxOutputTokens = 512 }
+            });
+            promptProviderMock.Setup(p => p.GetRerankCandidatesPrompt()).Returns(new PromptTemplate
+            {
+                Version = "1.0-test",
+                Template = "Rerank: {0} {1}",
+                Config = new GenerationConfig { Temperature = 0.3, TopK = 40, TopP = 0.9, MaxOutputTokens = 1024 }
+            });
+
+            return new GeminiService(factoryMock.Object, configMock.Object, loggerMock.Object, promptProviderMock.Object);
         }
 
         /// Wraps plain text inside a Gemini API response envelope.
@@ -176,9 +195,11 @@ namespace Test.Infrastructure
             var factoryMock = new Mock<IHttpClientFactory>();
             var configMock = new Mock<IConfiguration>();
             configMock.Setup(c => c["Gemini:ApiKey"]).Returns((string?)null);
+            var loggerMock = new Mock<ILogger<GeminiService>>();
+            var promptProviderMock = new Mock<IPromptProvider>();
 
             Assert.Throws<InvalidOperationException>(() =>
-                new GeminiService(factoryMock.Object, configMock.Object));
+                new GeminiService(factoryMock.Object, configMock.Object, loggerMock.Object, promptProviderMock.Object));
         }
     }
 }
